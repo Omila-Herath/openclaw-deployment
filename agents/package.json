@@ -1,0 +1,17 @@
+{
+  "name": "openclaw-orchard-agents",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "OpenClaw agents that feed the Orchard dashboard (email + news), writing JSON the dashboard polls.",
+  "scripts": {
+    "auth:gmail": "node email/gmail-auth.mjs",
+    "fetch:inbox": "node email/fetch-inbox.mjs",
+    "fetch:news": "node news/fetch-news.mjs",
+    "serve": "node serve.mjs"
+  },
+  "dependencies": {
+    "googleapis": "^144.0.0",
+    "rss-parser": "^3.13.0"
+  }
+}
