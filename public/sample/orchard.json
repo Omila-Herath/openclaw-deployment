@@ -1,0 +1,24 @@
+{
+  "scannedAt": "2026-11-04T00:06:00Z",
+  "scope": "My Drive",
+  "totalBytes": 75054553497,
+  "staleBytes": 48533130444,
+  "heaviest": { "name": "Signer.zip", "bytes": 17395891814, "lastTouchedISO": "2023-06-20" },
+  "folders": [
+    { "id": "orphaned",   "name": "Orphaned",         "bytes": 34144990003, "fileCount": 3100, "lastTouchedISO": "2024-01-10", "parentId": null },
+    { "id": "medhack",    "name": "MedHack 2026",      "bytes": 12348030976, "fileCount": 640,  "lastTouchedISO": "2026-10-05", "parentId": null },
+    { "id": "photos",     "name": "Photos",            "bytes": 5465345884,  "fileCount": 1800, "lastTouchedISO": "2026-04-10", "parentId": null },
+    { "id": "jackbox",    "name": "Jackbox 5 and 6",   "bytes": 4477503406,  "fileCount": 38,   "lastTouchedISO": "2024-06-10", "parentId": null },
+    { "id": "oceangrove", "name": "Ocean Grove 2026",  "bytes": 2748779069,  "fileCount": 210,  "lastTouchedISO": "2026-09-05", "parentId": null },
+    { "id": "mdnsign",    "name": "MDN_SignLanguage",  "bytes": 1975684956,  "fileCount": 120,  "lastTouchedISO": "2026-02-10", "parentId": null },
+    { "id": "asl",        "name": "ASL_Project",       "bytes": 1954210120,  "fileCount": 95,   "lastTouchedISO": "2025-07-10", "parentId": null },
+    { "id": "img1599",    "name": "IMG_1599.MOV",      "bytes": 1889585610,  "fileCount": 1,    "lastTouchedISO": "2025-12-10", "parentId": null },
+    { "id": "fit5215",    "name": "FIT5215",           "bytes": 1363652116,  "fileCount": 150,  "lastTouchedISO": "2024-08-10", "parentId": null },
+    { "id": "arohi",      "name": "Arohi",             "bytes": 985661440,   "fileCount": 60,   "lastTouchedISO": "2026-06-10", "parentId": null },
+    { "id": "mdnbackup",  "name": "MDN_Backup",        "bytes": 859832320,   "fileCount": 240,  "lastTouchedISO": "2025-03-10", "parentId": null },
+    { "id": "archive",    "name": "archive (2023)",    "bytes": 812646400,   "fileCount": 510,  "lastTouchedISO": "2024-04-10", "parentId": null },
+    { "id": "present",    "name": "Present",           "bytes": 853540864,   "fileCount": 44,   "lastTouchedISO": "2026-08-10", "parentId": null },
+    { "id": "sithija",    "name": "Sithija's share",   "bytes": 853540864,   "fileCount": 70,   "lastTouchedISO": "2025-09-10", "parentId": null },
+    { "id": "timanna",    "name": "Tim & Anna",        "bytes": 272629760,   "fileCount": 28,   "lastTouchedISO": "2026-05-10", "parentId": null }
+  ]
+}

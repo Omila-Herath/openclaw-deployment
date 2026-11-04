@@ -1,0 +1,7 @@
+{
+  "agents": [
+    { "id": "drive", "name": "Drive Keeper", "color": "#ffcf4d", "status": "tending", "targetFolderId": "orphaned", "progress": 0.4 },
+    { "id": "inbox", "name": "Inbox Scout",  "color": "#7fd0ff", "status": "flying",  "targetFolderId": "medhack",  "progress": 0.0 },
+    { "id": "news",  "name": "News Forager", "color": "#b7f06a", "status": "tending", "targetFolderId": "photos",   "progress": 0.7 }
+  ]
+}
