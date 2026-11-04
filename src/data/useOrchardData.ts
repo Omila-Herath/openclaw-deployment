@@ -1,5 +1,13 @@
 import { useEffect, useRef, useState } from "react";
-import type { OrchardData, FleetData, InboxData, NewsData } from "./schema";
+import type {
+  OrchardData,
+  FleetData,
+  InboxData,
+  NewsData,
+  WeatherData,
+  CalendarData,
+  MessagesData,
+} from "./schema";
 
 // Where to read data from.
 //  - Demo / shareable build: bundled files in /public/sample (default).
@@ -30,6 +38,9 @@ export function useOrchardData() {
   const [fleet, setFleet] = useState<FleetData | null>(null);
   const [inbox, setInbox] = useState<InboxData | null>(null);
   const [news, setNews] = useState<NewsData | null>(null);
+  const [weather, setWeather] = useState<WeatherData | null>(null);
+  const [calendar, setCalendar] = useState<CalendarData | null>(null);
+  const [messages, setMessages] = useState<MessagesData | null>(null);
   const [error, setError] = useState<string | null>(null);
   const orchardSig = useRef<string>("");
 
@@ -53,16 +64,25 @@ export function useOrchardData() {
     const pullFleet = () => getJSON<FleetData>(url("fleet.json")).then((d) => alive && setFleet(d)).catch(() => {});
     const pullInbox = () => getJSON<InboxData>(url("inbox.json")).then((d) => alive && setInbox(d)).catch(() => {});
     const pullNews = () => getJSON<NewsData>(url("news.json")).then((d) => alive && setNews(d)).catch(() => {});
+    const pullWeather = () => getJSON<WeatherData>(url("weather.json")).then((d) => alive && setWeather(d)).catch(() => {});
+    const pullCalendar = () => getJSON<CalendarData>(url("calendar.json")).then((d) => alive && setCalendar(d)).catch(() => {});
+    const pullMessages = () => getJSON<MessagesData>(url("messages.json")).then((d) => alive && setMessages(d)).catch(() => {});
 
     pullOrchard();
     pullFleet();
     pullInbox();
     pullNews();
+    pullWeather();
+    pullCalendar();
+    pullMessages();
 
     const timers = [
       setInterval(pullFleet, FLEET_MS),
       setInterval(pullInbox, CONTENT_MS),
       setInterval(pullNews, CONTENT_MS),
+      setInterval(pullMessages, CONTENT_MS),
+      setInterval(pullWeather, 5 * 60 * 1000),
+      setInterval(pullCalendar, 5 * 60 * 1000),
       ...(isLive ? [setInterval(pullOrchard, ORCHARD_MS)] : []),
     ];
 
@@ -72,5 +92,5 @@ export function useOrchardData() {
     };
   }, []);
 
-  return { orchard, fleet, inbox, news, error, isLive };
+  return { orchard, fleet, inbox, news, weather, calendar, messages, error, isLive };
 }

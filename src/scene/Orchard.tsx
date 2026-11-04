@@ -1,10 +1,12 @@
 import { useMemo } from "react";
 import { useFrame } from "@react-three/fiber";
 import { OrbitControls, Sparkles } from "@react-three/drei";
-import type { OrchardData, FleetData, Agent } from "../data/schema";
+import type { OrchardData, FleetData, Agent, WeatherData, CalendarData, MessagesData } from "../data/schema";
 import { computeLayout } from "./layout";
 import { windTime } from "./wind";
-import Sky from "./Sky";
+import Weather from "./Weather";
+import Lanterns from "./Lanterns";
+import Birds from "./Birds";
 import Ground from "./Ground";
 import Tree from "./Tree";
 import Apples from "./Apples";
@@ -26,10 +28,16 @@ export default function Orchard({
   orchard,
   fleet,
   live,
+  weather,
+  calendar,
+  messages,
 }: {
   orchard: OrchardData;
   fleet: FleetData | null;
   live: boolean;
+  weather: WeatherData | null;
+  calendar: CalendarData | null;
+  messages: MessagesData | null;
 }) {
   const layout = useMemo(() => computeLayout(orchard), [orchard]);
   const agents = fleet?.agents?.length ? fleet.agents : DEFAULT_AGENTS;
@@ -40,26 +48,10 @@ export default function Orchard({
 
   return (
     <>
-      <color attach="background" args={["#cfe0f2"]} />
-      <fogExp2 attach="fog" args={["#e7dcc3", 0.0075]} />
-
-      <hemisphereLight args={["#cfe3ff", "#6a5a38", 0.85]} />
-      <ambientLight intensity={0.12} />
-      <directionalLight
-        position={[34, 48, 20]}
-        intensity={1.65}
-        color="#fff0d4"
-        castShadow
-        shadow-mapSize-width={2048}
-        shadow-mapSize-height={2048}
-        shadow-bias={-0.0006}
-        shadow-normalBias={0.4}
-      >
-        <orthographicCamera attach="shadow-camera" args={[-70, 70, 70, -70, 1, 160]} />
-      </directionalLight>
-
-      <Sky />
+      <Weather weather={weather} />
       <Ground />
+      <Lanterns calendar={calendar} />
+      <Birds messages={messages} />
 
       {layout.map((m) => (
         <Tree key={m.folder.id} m={m} />

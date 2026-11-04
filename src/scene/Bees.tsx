@@ -101,10 +101,9 @@ function Bee({
       // Data drives everything.
       tending = a.status === "tending";
       progress = Math.max(0, Math.min(1, a.progress ?? 0));
-      label =
-        a.status === "idle"
-          ? "idle"
-          : (a.status === "flying" ? "flying to " : "tending ") + tgt.folder.name;
+      if (a.status === "idle") label = "idle";
+      else if (a.targetFolderId) label = (a.status === "flying" ? "flying to " : "tending ") + tgt.folder.name;
+      else label = a.status === "flying" ? "on the move" : "working";
     } else {
       // Self-driven simulation for the demo.
       if (close) {

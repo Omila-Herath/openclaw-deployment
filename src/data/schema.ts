@@ -69,3 +69,39 @@ export interface NewsData {
   topics: string[];
   items: NewsItem[];
 }
+
+// --- Weather agent output (weather.json) ---
+export type WeatherCondition = "clear" | "partly" | "cloudy" | "rain" | "storm" | "snow";
+export interface WeatherData {
+  updatedAt: string;
+  location?: string;
+  tempC?: number;
+  isDay?: boolean;
+  condition: WeatherCondition;
+}
+
+// --- Calendar agent output (calendar.json) ---
+export interface CalendarEvent {
+  id: string;
+  title: string;
+  startISO: string;
+  allDay?: boolean;
+}
+export interface CalendarData {
+  updatedAt: string;
+  events: CalendarEvent[];
+}
+
+// --- Messages agent output (messages.json) ---
+export interface Message {
+  id: string;
+  from: string;
+  platform?: string;
+  preview: string;
+  receivedISO: string;
+}
+export interface MessagesData {
+  updatedAt: string;
+  unread: number;
+  items: Message[];
+}

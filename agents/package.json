@@ -8,11 +8,15 @@
     "auth:gmail": "node email/gmail-auth.mjs",
     "fetch:inbox": "node email/fetch-inbox.mjs",
     "fetch:news": "node news/fetch-news.mjs",
+    "fetch:weather": "node weather/fetch-weather.mjs",
+    "fetch:calendar": "node calendar/fetch-calendar.mjs",
+    "fetch:messages": "node messages/fetch-messages.mjs",
     "serve": "node serve.mjs"
   },
   "dependencies": {
     "dotenv": "^16.4.5",
     "googleapis": "^144.0.0",
+    "node-ical": "^0.20.1",
     "rss-parser": "^3.13.0"
   }
 }
