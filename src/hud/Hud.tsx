@@ -1,9 +1,10 @@
 import { useEffect, useRef } from "react";
-import type { OrchardData } from "../data/schema";
+import type { OrchardData, InboxData, NewsData } from "../data/schema";
 import { useHover } from "../store";
 import { fleetLive } from "../store";
 import { monthsSince, ripeColor } from "../scene/ripeness";
 import FleetBar from "./FleetBar";
+import InfoPanel from "./InfoPanel";
 
 const GB = 1024 * 1024 * 1024;
 const MB = 1024 * 1024;
@@ -20,7 +21,15 @@ function fmtAge(iso: string): string {
   return `${(m / 12).toFixed(1)} yr ago`;
 }
 
-export default function Hud({ orchard }: { orchard: OrchardData }) {
+export default function Hud({
+  orchard,
+  inbox,
+  news,
+}: {
+  orchard: OrchardData;
+  inbox: InboxData | null;
+  news: NewsData | null;
+}) {
   const hovered = useHover((s) => s.hovered);
   const tipRef = useRef<HTMLDivElement>(null);
   const hintRef = useRef<HTMLDivElement>(null);
@@ -97,6 +106,8 @@ export default function Hud({ orchard }: { orchard: OrchardData }) {
           </div>
         </div>
       </div>
+
+      <InfoPanel inbox={inbox} news={news} />
 
       <FleetBar />
 

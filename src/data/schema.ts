@@ -39,3 +39,33 @@ export interface Agent {
 export interface FleetData {
   agents: Agent[];
 }
+
+// --- Inbox Scout output (inbox.json) ---
+export interface EmailMessage {
+  id: string;
+  from: string;
+  subject: string;
+  snippet: string;
+  receivedISO: string;
+  importance: "high" | "normal";
+}
+export interface InboxData {
+  updatedAt: string;
+  unread: number;
+  messages: EmailMessage[];
+}
+
+// --- News Forager output (news.json) ---
+export interface NewsItem {
+  id: string;
+  title: string;
+  source: string;
+  url: string;
+  publishedISO: string;
+  sentiment?: string;
+}
+export interface NewsData {
+  updatedAt: string;
+  topics: string[];
+  items: NewsItem[];
+}

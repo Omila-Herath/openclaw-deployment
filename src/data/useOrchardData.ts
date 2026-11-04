@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState } from "react";
-import type { OrchardData, FleetData } from "./schema";
+import type { OrchardData, FleetData, InboxData, NewsData } from "./schema";
 
 // Where to read data from.
 //  - Demo / shareable build: bundled files in /public/sample (default).
 //  - Live / personal mode: set VITE_DATA_URL to where OpenClaw serves (or a
-//    static server exposes) orchard.json + fleet.json, e.g.
+//    static server exposes) the JSON, e.g.
 //    VITE_DATA_URL="http://localhost:8787"  or  "/api" (with the Vite proxy).
 const RAW = import.meta.env.VITE_DATA_URL;
 
@@ -12,23 +12,24 @@ const RAW = import.meta.env.VITE_DATA_URL;
 export const isLive = !!RAW;
 
 const BASE = RAW ? RAW.replace(/\/$/, "") : `${import.meta.env.BASE_URL}sample`;
-const ORCHARD_URL = `${BASE}/orchard.json`;
-const FLEET_URL = `${BASE}/fleet.json`;
+const url = (name: string) => `${BASE}/${name}`;
 
-// Poll intervals. Fleet (which agent is doing what) changes constantly;
-// folder structure changes rarely, so we re-poll it far less often.
+// Poll intervals (ms). Fleet changes constantly; content less often; structure rarely.
 const FLEET_MS = 2000;
+const CONTENT_MS = 10000;
 const ORCHARD_MS = 60000;
 
-async function getJSON<T>(url: string): Promise<T> {
-  const res = await fetch(url, { cache: "no-store" });
-  if (!res.ok) throw new Error(`${url} -> ${res.status}`);
+async function getJSON<T>(u: string): Promise<T> {
+  const res = await fetch(u, { cache: "no-store" });
+  if (!res.ok) throw new Error(`${u} -> ${res.status}`);
   return (await res.json()) as T;
 }
 
 export function useOrchardData() {
   const [orchard, setOrchard] = useState<OrchardData | null>(null);
   const [fleet, setFleet] = useState<FleetData | null>(null);
+  const [inbox, setInbox] = useState<InboxData | null>(null);
+  const [news, setNews] = useState<NewsData | null>(null);
   const [error, setError] = useState<string | null>(null);
   const orchardSig = useRef<string>("");
 
@@ -37,10 +38,8 @@ export function useOrchardData() {
 
     async function pullOrchard() {
       try {
-        const d = await getJSON<OrchardData>(ORCHARD_URL);
+        const d = await getJSON<OrchardData>(url("orchard.json"));
         if (!alive) return;
-        // Only swap state when the content actually changed, so trees don't
-        // rebuild on every poll.
         const sig = JSON.stringify(d);
         if (sig !== orchardSig.current) {
           orchardSig.current = sig;
@@ -51,30 +50,27 @@ export function useOrchardData() {
         if (alive && !orchardSig.current) setError(String(e));
       }
     }
-
-    async function pullFleet() {
-      try {
-        const d = await getJSON<FleetData>(FLEET_URL);
-        if (alive) setFleet(d);
-      } catch {
-        /* fleet optional; bees fall back to defaults/simulation */
-      }
-    }
+    const pullFleet = () => getJSON<FleetData>(url("fleet.json")).then((d) => alive && setFleet(d)).catch(() => {});
+    const pullInbox = () => getJSON<InboxData>(url("inbox.json")).then((d) => alive && setInbox(d)).catch(() => {});
+    const pullNews = () => getJSON<NewsData>(url("news.json")).then((d) => alive && setNews(d)).catch(() => {});
 
     pullOrchard();
     pullFleet();
+    pullInbox();
+    pullNews();
 
-    // Keep the fleet fresh. Re-poll structure only in live mode (the demo
-    // sample never changes).
-    const fleetTimer = setInterval(pullFleet, FLEET_MS);
-    const orchardTimer = isLive ? setInterval(pullOrchard, ORCHARD_MS) : null;
+    const timers = [
+      setInterval(pullFleet, FLEET_MS),
+      setInterval(pullInbox, CONTENT_MS),
+      setInterval(pullNews, CONTENT_MS),
+      ...(isLive ? [setInterval(pullOrchard, ORCHARD_MS)] : []),
+    ];
 
     return () => {
       alive = false;
-      clearInterval(fleetTimer);
-      if (orchardTimer) clearInterval(orchardTimer);
+      timers.forEach(clearInterval);
     };
   }, []);
 
-  return { orchard, fleet, error, isLive };
+  return { orchard, fleet, inbox, news, error, isLive };
 }

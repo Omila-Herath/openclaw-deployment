@@ -5,7 +5,7 @@ import Orchard from "./scene/Orchard";
 import Hud from "./hud/Hud";
 
 export default function App() {
-  const { orchard, fleet, error, isLive } = useOrchardData();
+  const { orchard, fleet, inbox, news, error, isLive } = useOrchardData();
 
   if (error) {
     return (
@@ -35,7 +35,7 @@ export default function App() {
       >
         <Orchard orchard={orchard} fleet={fleet} live={isLive} />
       </Canvas>
-      <Hud orchard={orchard} />
+      <Hud orchard={orchard} inbox={inbox} news={news} />
     </>
   );
 }
