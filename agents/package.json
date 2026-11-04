@@ -6,6 +6,8 @@
   "description": "OpenClaw agents that feed the Orchard dashboard (email + news), writing JSON the dashboard polls.",
   "scripts": {
     "auth:gmail": "node email/gmail-auth.mjs",
+    "auth:drive": "node drive/drive-auth.mjs",
+    "fetch:drive": "node drive/fetch-drive.mjs",
     "fetch:inbox": "node email/fetch-inbox.mjs",
     "fetch:news": "node news/fetch-news.mjs",
     "fetch:weather": "node weather/fetch-weather.mjs",

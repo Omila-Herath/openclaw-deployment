@@ -55,6 +55,26 @@ npm run fetch:inbox
 
 You should see `inbox.json written — N unread`. ✅ (The scope is **read-only** — the agent can never send or delete.)
 
+## 2b. Drive Keeper (makes the trees your real folders)
+
+The trees are sample data until this runs. It reuses the **same** Gmail OAuth app:
+
+1. In the same Google Cloud project, **enable the Google Drive API** (APIs & Services → Library).
+2. On the consent screen, add the scope `.../auth/drive.metadata.readonly` (and keep yourself a Test user).
+3. Get a Drive token (opens the browser once):
+
+```bash
+npm run auth:drive
+```
+
+Paste the printed `GDRIVE_REFRESH_TOKEN=…` into `.env`, then scan:
+
+```bash
+npm run fetch:drive
+```
+
+You'll see `orchard.json written — N folders, X GB`. Refresh the dashboard and the trees become your real Drive. It reads **metadata only** (names, sizes, dates — never file contents), and skips Google-native docs (they report no size), just like the original scan.
+
 ## 3. See them working in the dashboard
 
 Serve the data folder:
