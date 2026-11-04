@@ -1,6 +1,7 @@
 // News Forager — pulls RSS feeds, writes news.json, and reports its status.
 // Run: node news/fetch-news.mjs   (reads RSS_FEEDS / NEWS_TOPICS from env)
 
+import "dotenv/config"; // loads .env from the current working directory
 import Parser from "rss-parser";
 import { writeData, setAgentStatus } from "../lib/fleet.mjs";
 

@@ -79,20 +79,42 @@ The fleet bar flips to **LIVE** and the bees follow your real agents. Run `fetch
 
 ## 4. Register them in OpenClaw (so OpenClaw runs them on a schedule)
 
-Create the agents (per the [OpenClaw docs](https://docs.openclaw.ai/cli/agents) — flags vary by version, check `openclaw agents --help`):
+You've already created the agents:
 
 ```bash
 openclaw agents add inbox --workspace ~/.openclaw/workspace-inbox
 openclaw agents add news  --workspace ~/.openclaw/workspace-news
 ```
 
-- Put `email/SOUL.md` into the inbox agent's workspace, and `news/SOUL.md` into the news agent's.
-- Give each agent a skill/tool that runs its fetch script (point it at this `agents/` folder), e.g. the command `node <path>/agents/news/fetch-news.mjs`.
-- Schedule the runs. Use OpenClaw's scheduler if your version has one; otherwise the OS works fine:
-  - **Windows (Task Scheduler):** a basic task every 15 min running `node C:\...\agents\news\fetch-news.mjs`.
-  - **macOS/Linux (cron):** `*/15 * * * * cd ~/…/agents && node news/fetch-news.mjs`
+### 4a. Give each agent its charter + heartbeat
+OpenClaw loads the files in an agent's workspace at session start, and runs
+`HEARTBEAT.md` on every scheduled tick. Copy them in:
 
-Each run rewrites the JSON and updates `fleet.json`, so the dashboard stays live and the bees keep moving.
+```bash
+cp email/SOUL.md email/HEARTBEAT.md ~/.openclaw/workspace-inbox/
+cp news/SOUL.md  news/HEARTBEAT.md  ~/.openclaw/workspace-news/
+```
+
+Edit the two `HEARTBEAT.md` files and replace `/ABSOLUTE/PATH/TO/` with the real
+path to this `agents/` folder on your machine. (`.env` is loaded from wherever
+the command runs, so the `cd …/agents` part matters.)
+
+### 4b. Schedule them
+OpenClaw stores schedules in `~/.openclaw/cron/jobs.json`. Create a recurring job
+per agent (command name varies by version — check `openclaw automations --help`
+or `openclaw cron --help`):
+
+```bash
+openclaw automations create "*/15 * * * *" "Run your HEARTBEAT: fetch and update your JSON." --agent inbox
+openclaw automations create "*/20 * * * *" "Run your HEARTBEAT: fetch and update your JSON." --agent news
+```
+
+Prefer not to route through the LLM each run? Schedule the scripts directly instead:
+- **Windows (Task Scheduler):** new task every 15 min → `node C:\...\openclaw-deployment\agents\news\fetch-news.mjs` (set "Start in" to the `agents` folder).
+- **macOS/Linux (cron):** `*/15 * * * * cd ~/…/openclaw-deployment/agents && node news/fetch-news.mjs`
+
+Either way, each run rewrites the JSON and updates `fleet.json`, so the dashboard
+stays live and the bees keep moving.
 
 ---
 

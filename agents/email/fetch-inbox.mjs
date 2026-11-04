@@ -2,6 +2,7 @@
 // Needs GMAIL_CLIENT_ID / GMAIL_CLIENT_SECRET / GMAIL_REFRESH_TOKEN (see README).
 // Run: node email/fetch-inbox.mjs
 
+import "dotenv/config"; // loads .env from the current working directory
 import { google } from "googleapis";
 import { writeData, setAgentStatus } from "../lib/fleet.mjs";
 

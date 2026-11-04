@@ -2,6 +2,7 @@
 // Needs GMAIL_CLIENT_ID / GMAIL_CLIENT_SECRET set first.
 // Run: node email/gmail-auth.mjs  → open the printed URL → approve → done.
 
+import "dotenv/config"; // loads .env from the current working directory
 import http from "node:http";
 import { google } from "googleapis";
 
